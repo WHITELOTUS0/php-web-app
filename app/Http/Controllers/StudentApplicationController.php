@@ -4,15 +4,17 @@ namespace App\Http\Controllers;
 
 use App\Models\StudentApplication;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class StudentApplicationController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): Response
     {
         //
+        return response('Hello, World!');
     }
 
     /**
