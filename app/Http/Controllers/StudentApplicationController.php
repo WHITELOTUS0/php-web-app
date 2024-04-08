@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\StudentApplication;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -31,9 +32,15 @@ class StudentApplicationController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request):RedirectResponse
     {
-        //
+        $validated = $request->validate([
+            //
+        ]);
+
+        $request->student_applications()->create($validated);
+
+        return redirect(route('apply.index'));
     }
 
     /**
