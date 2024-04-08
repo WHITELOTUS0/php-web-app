@@ -1,37 +1,119 @@
-import React from 'react';
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import InputError from '@/Components/InputError';
-import PrimaryButton from '@/Components/PrimaryButton';
-import { useForm, Head } from '@inertiajs/react';
+import * as React from 'react';
+import Box from '@mui/material/Box';
+import Stepper from '@mui/material/Stepper';
+import Step from '@mui/material/Step';
+import StepLabel from '@mui/material/StepLabel';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
 
-export default function Index({ auth }) {
-    const { data, setData, post, processing, reset, errors } = useForm({
-        message: '',
+const steps = [
+ 'Personal Info',
+ 'Education Background',
+ 'UCE Results',
+ 'Parents/Guardian Info',
+ 'Finish',
+];
+
+export default function Index() {
+ const [activeStep, setActiveStep] = React.useState(0);
+ const [skipped, setSkipped] = React.useState(new Set());
+
+ const isStepOptional = (step) => {
+    return step === 1; // Assuming Education Background is optional
+ };
+
+ const isStepSkipped = (step) => {
+    return skipped.has(step);
+ };
+
+ const handleNext = () => {
+    let newSkipped = skipped;
+    if (isStepSkipped(activeStep)) {
+      newSkipped = new Set(newSkipped.values());
+      newSkipped.delete(activeStep);
+    }
+
+    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    setSkipped(newSkipped);
+ };
+
+ const handleBack = () => {
+    setActiveStep((prevActiveStep) => prevActiveStep - 1);
+ };
+
+ const handleSkip = () => {
+    if (!isStepOptional(activeStep)) {
+      throw new Error("You can't skip a step that isn't optional.");
+    }
+
+    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    setSkipped((prevSkipped) => {
+      const newSkipped = new Set(prevSkipped.values());
+      newSkipped.add(activeStep);
+      return newSkipped;
     });
+ };
 
-    const submit = (e) => {
-        e.preventDefault();
-        post(route('chirps.store'), { onSuccess: () => reset() });
-    };
+ const handleReset = () => {
+    setActiveStep(0);
+ };
 
-    return (
-        <>
+ return (
+    <Box sx={{ width: '100%' }}>
+      <Stepper activeStep={activeStep}>
+        {steps.map((label, index) => {
+          const stepProps = {};
+          const labelProps = {};
+          if (isStepOptional(index)) {
+            labelProps.optional = (
+              <Typography variant="caption">Optional</Typography>
+            );
+          }
+          if (isStepSkipped(index)) {
+            stepProps.completed = false;
+          }
+          return (
+            <Step key={label} {...stepProps}>
+              <StepLabel {...labelProps}>{label}</StepLabel>
+            </Step>
+          );
+        })}
+      </Stepper>
+      {activeStep === steps.length ? (
+        <React.Fragment>
+          <Typography sx={{ mt: 2, mb: 1 }}>
+            All steps completed - you&apos;re finished
+          </Typography>
+          <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
+            <Box sx={{ flex: '1 1 auto' }} />
+            <Button onClick={handleReset}>Reset</Button>
+          </Box>
+        </React.Fragment>
+      ) : (
+        <React.Fragment>
+          <Typography sx={{ mt: 2, mb: 1 }}>Step {activeStep + 1}</Typography>
+          <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
+            <Button
+              color="inherit"
+              disabled={activeStep === 0}
+              onClick={handleBack}
+              sx={{ mr: 1 }}
+            >
+              Back
+            </Button>
+            <Box sx={{ flex: '1 1 auto' }} />
+            {isStepOptional(activeStep) && (
+              <Button color="inherit" onClick={handleSkip} sx={{ mr: 1 }}>
+                Skip
+              </Button>
+            )}
 
-            <Head title="Chirps" />
-
-            <div className="max-w-2xl mx-auto p-4 sm:p-6 lg:p-8">
-                <form onSubmit={submit}>
-                    <textarea
-                        value={data.message}
-                        placeholder="What's on your mind?"
-                        className="block w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm"
-                        onChange={e => setData('message', e.target.value)}
-                    ></textarea>
-                    <InputError message={errors.message} className="mt-2" />
-                    <PrimaryButton className="mt-4" disabled={processing}>Chirp</PrimaryButton>
-                </form>
-            </div>
-            </>
-
-    );
+            <Button onClick={handleNext}>
+              {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
+            </Button>
+          </Box>
+        </React.Fragment>
+      )}
+    </Box>
+ );
 }
