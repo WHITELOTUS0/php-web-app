@@ -40,7 +40,7 @@ class StudentApplicationController extends Controller
 
         $request->student_applications()->create($validated);
 
-        return redirect(route('apply.index'));
+        return redirect(route('apply.index'))->with('message', 'Application submitted successfully.');
     }
 
     /**

@@ -68,6 +68,59 @@ export default function Index() {
     const [parentNationality, setParentNationality] = React.useState("");
     const [country, setCountry] = React.useState("");
     const [parentNationalNo, setParentNationalNo] = React.useState("");
+    const [firstChoiceCombination, setFirstChoiceCombination] =
+        React.useState("");
+    const [secondChoiceCombination, setSecondChoiceCombination] =
+        React.useState("");
+    const [thirdChoiceCombination, setThirdChoiceCombination] =
+        React.useState("");
+    const [formerSchool, setFormerSchool] = React.useState("");
+    const [yearUCEWasSat, setYearUCEWasSat] = React.useState("");
+    const [bestDoneOptionalSubject, setBestDoneOptionalSubject] =
+        React.useState("");
+    const [
+        secondBestDoneOptionalSubject,
+        setSecondBestDoneOptionalSubject,
+    ] = React.useState("");
+    const [
+        thirdBestDoneOptionalSubject,
+        setThirdBestDoneOptionalSubject,
+    ] = React.useState("");
+
+    const handleSubmit = () => {
+        // Gather all the data from your form fields
+        const formData = {
+            studentName,
+            indexNumber,
+            dateOfBirth,
+            emailAddress,
+            formerSchool, // Include the new fields
+            yearUCEWasSat,
+            firstChoice,
+            totalAggregate,
+            subjectScores,
+            bestDoneOptionalSubject,
+            bestDoneOptionalSubjectScore,
+            secondBestDoneOptionalSubject,
+            secondBestDoneOptionalSubjectScore,
+            thirdBestDoneOptionalSubject,
+            thirdBestDoneOptionalSubjectScore,
+            firstChoiceCombination,
+            secondChoiceCombination,
+            thirdChoiceCombination,
+            parentName,
+            parentEmail,
+            parentTelNo,
+            parentNationality,
+            country,
+            parentNationalNo,
+            selectedFile,
+        };
+
+        // Send the data to your API
+        //post(route('chirps.store'), { onSuccess: () => reset() });
+        console.log(formData);
+    };
 
     const isStepOptional = (step) => {
         return step === 1; // Assuming Education Background is optional
@@ -86,6 +139,10 @@ export default function Index() {
 
         setActiveStep((prevActiveStep) => prevActiveStep + 1);
         setSkipped(newSkipped);
+
+        if (activeStep === steps.length - 1) {
+            handleSubmit(); // Call the submit function on the last step
+        }
     };
 
     const handleBack = () => {
@@ -217,7 +274,10 @@ export default function Index() {
                                     margin="normal"
                                     label="Former School"
                                     variant="outlined"
-                                    // Add any other props you need, like onChange to handle input changes
+                                    value={formerSchool}
+                                    onChange={(e) =>
+                                        setFormerSchool(e.target.value)
+                                    }
                                 />
                                 <Typography variant="body1">
                                     Was Crested secondary school your first
@@ -249,7 +309,10 @@ export default function Index() {
                                     label="Year in Which UCE was sat"
                                     variant="outlined"
                                     type="number"
-                                    // Add any other props you need, like onChange to handle input changes
+                                    value={yearUCEWasSat}
+                                    onChange={(e) =>
+                                        setYearUCEWasSat(e.target.value)
+                                    }
                                 />
                             </React.Fragment>
                         )}
@@ -313,7 +376,12 @@ export default function Index() {
                                     margin="normal"
                                     label="Best done Optional Subject"
                                     variant="outlined"
-                                    // Add any other props you need, like onChange to handle input changes
+                                    value={bestDoneOptionalSubject}
+                                    onChange={(e) =>
+                                        setBestDoneOptionalSubject(
+                                            e.target.value
+                                        )
+                                    }
                                 />
                                 <RadioGroup
                                     row
@@ -340,7 +408,12 @@ export default function Index() {
                                     margin="normal"
                                     label="Second Best done Optional Subject"
                                     variant="outlined"
-                                    // Add any other props you need, like onChange to handle input changes
+                                    value={secondBestDoneOptionalSubject}
+                                    onChange={(e) =>
+                                        setSecondBestDoneOptionalSubject(
+                                            e.target.value
+                                        )
+                                    }
                                 />
                                 <RadioGroup
                                     row
@@ -367,6 +440,12 @@ export default function Index() {
                                     margin="normal"
                                     label="Third Best done Optional Subject"
                                     variant="outlined"
+                                    value={thirdBestDoneOptionalSubject}
+                                    onChange={(e) =>
+                                        setThirdBestDoneOptionalSubject(
+                                            e.target.value
+                                        )
+                                    }
                                     // Add any other props you need, like onChange to handle input changes
                                 />
                                 <RadioGroup
@@ -394,21 +473,36 @@ export default function Index() {
                                     margin="normal"
                                     label="First Choice Combination"
                                     variant="outlined"
-                                    // Add any other props you need, like onChange to handle input changes
+                                    value={firstChoiceCombination}
+                                    onChange={(e) =>
+                                        setFirstChoiceCombination(
+                                            e.target.value
+                                        )
+                                    }
                                 />
                                 <TextField
                                     fullWidth
                                     margin="normal"
                                     label="Second Choice Combination"
                                     variant="outlined"
-                                    // Add any other props you need, like onChange to handle input changes
+                                    value={secondChoiceCombination}
+                                    onChange={(e) =>
+                                        setSecondChoiceCombination(
+                                            e.target.value
+                                        )
+                                    }
                                 />
                                 <TextField
                                     fullWidth
                                     margin="normal"
                                     label="Third Choice Combination"
                                     variant="outlined"
-                                    // Add any other props you need, like onChange to handle input changes
+                                    value={thirdChoiceCombination}
+                                    onChange={(e) =>
+                                        setThirdChoiceCombination(
+                                            e.target.value
+                                        )
+                                    }
                                 />
                                 <Typography variant="body1">
                                     Upload UCE Results
