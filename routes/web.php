@@ -26,6 +26,6 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::resource('apply', StudentApplicationController::class)
-    ->only(['index', 'store']);
+    ->only(['index', 'store','create']);
 
 require __DIR__.'/auth.php';

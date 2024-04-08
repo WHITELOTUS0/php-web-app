@@ -12,6 +12,8 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Slider from "@mui/material/Slider";
 import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
+import { router } from "@inertiajs/react";
+
 
 const steps = [
     "Personal Info",
@@ -32,6 +34,7 @@ const subjects = [
 ];
 
 export default function Index() {
+
     const [activeStep, setActiveStep] = React.useState(0);
     const [skipped, setSkipped] = React.useState(new Set());
 
@@ -90,36 +93,43 @@ export default function Index() {
     const handleSubmit = () => {
         // Gather all the data from your form fields
         const formData = {
-            studentName,
-            indexNumber,
-            dateOfBirth,
-            emailAddress,
-            formerSchool, // Include the new fields
-            yearUCEWasSat,
-            firstChoice,
-            totalAggregate,
-            subjectScores,
-            bestDoneOptionalSubject,
-            bestDoneOptionalSubjectScore,
-            secondBestDoneOptionalSubject,
-            secondBestDoneOptionalSubjectScore,
-            thirdBestDoneOptionalSubject,
-            thirdBestDoneOptionalSubjectScore,
-            firstChoiceCombination,
-            secondChoiceCombination,
-            thirdChoiceCombination,
-            parentName,
-            parentEmail,
-            parentTelNo,
-            parentNationality,
-            country,
-            parentNationalNo,
-            selectedFile,
+        student_name: studentName,
+        index_number: indexNumber,
+        dob: dateOfBirth,
+        email: emailAddress,
+        former_school: formerSchool,
+        first_choice: firstChoice,
+        uce_year: yearUCEWasSat,
+        aggregate_score: totalAggregate,
+        english_score: subjectScores.English,
+        math_score: subjectScores.Math,
+        biology_score: subjectScores.Biology,
+        chemistry_score: subjectScores.Chemistry,
+        physics_score: subjectScores.Physics,
+        geography_score: subjectScores.Geography,
+        history_score: subjectScores.History,
+        best_optional_subject: bestDoneOptionalSubject,
+        best_optional_score: bestDoneOptionalSubjectScore,
+        second_best_optional_subject: secondBestDoneOptionalSubject,
+        second_best_optional_score: secondBestDoneOptionalSubjectScore,
+        third_best_optional_subject: thirdBestDoneOptionalSubject,
+        third_best_optional_score: thirdBestDoneOptionalSubjectScore,
+        first_choice_combination: firstChoiceCombination,
+        second_choice_combination: secondChoiceCombination,
+        third_choice_combination: thirdChoiceCombination,
+        results_file_path: selectedFile,
+        parent_name: parentName,
+        parent_email: parentEmail,
+        parent_tel: parentTelNo,
+        parent_nationality: parentNationality,
+        country: country,
+        parent_national_id: parentNationalNo,
         };
 
         // Send the data to your API
-        //post(route('chirps.store'), { onSuccess: () => reset() });
-        console.log(formData);
+        console.log(formData)
+        router.post('/apply', formData);
+
     };
 
     const isStepOptional = (step) => {
